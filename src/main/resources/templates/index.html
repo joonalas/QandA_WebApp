@@ -1,0 +1,31 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    
+    <head>
+        <title>Title</title>
+        <meta charset="utf-8"/>
+    </head>
+    
+    <body>
+        
+        <h1>Test</h1>
+        
+        <h2>Add Courses:</h2>
+        <form method="POST" action="/courses">
+            <span>Code</span><br/>
+            <input type="text" name="code"/><br/>
+            <span>Name</span><br/>
+            <input type="text" name="name"/><br/>
+            <input type="submit" value="Add Course"/>
+        </form>
+        
+        <h2>Courses:</h2>
+        <ul>
+            <li th:each="course: ${courses}">
+                <a th:href="@{~/courses/{id}(id=${course.id})}" th:text="${course.code}">NULL</a>
+                <span th:text="${course.name}">NULL</span>
+            </li>
+        </ul>
+        
+    </body>
+</html>

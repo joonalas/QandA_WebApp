@@ -1,0 +1,39 @@
+CREATE TABLE Course(
+id integer primary key,
+code varchar(50),
+name varchar(100));
+
+CREATE TABLE Question(
+id integer primary key,
+topic_id integer,
+text text,
+foreign key (topic_id) references Topic(id));
+
+CREATE TABLE Topic(
+id integer primary key,
+course_id integer,
+name varchar(100),
+foreign key (course_id) references Course(id));
+
+CREATE TABLE Option(
+id integer primary key,
+question_id integer,
+text text,
+right boolean,
+foreign key (question_id) references Question(id));
+
+CREATE TABLE Answer(
+id integer primary key,
+option_id integer,
+timestamp datetime,
+foreign key (option_id) references Option(id));
+
+
+
+/*CREATE TABLE Question(
+id integer primary key,
+course_id integer,
+topic_id integer,
+text text,
+foreign key (course_id) references Course(id),
+foreign key (topic_id) references Topic(id));*/
