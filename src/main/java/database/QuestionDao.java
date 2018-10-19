@@ -6,7 +6,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-//import java.util.ArrayList;
 import java.util.List;
 
 
@@ -33,10 +32,9 @@ public class QuestionDao implements Dao<Question, Integer>{
             return null;
         }
         
-        //Course course = courseDao.findOne(rs.getInt("course_id"));
         Topic topic = topicDao.findOne(rs.getInt("topic_id"));
         
-        Question q = new Question(rs.getInt("id"), /*course,*/ topic, rs.getString("text"));
+        Question q = new Question(rs.getInt("id"), topic, rs.getString("text"));
         
         stmt.close();
         rs.close();
@@ -44,29 +42,6 @@ public class QuestionDao implements Dao<Question, Integer>{
         
         return q;
     }
-    
-    /*public List<Question> findByCourse(Course course) throws SQLException {
-        List<Question> questions = new ArrayList<>();
-        try(Connection conn = database.getConnection()){
-            PreparedStatement stmt = conn.prepareStatement("SELECT * FROM Question WHERE course_id = ?");
-            stmt.setInt(1, course.getId());
-            
-            ResultSet rs = stmt.executeQuery();
-            while(rs.next()) {
-                questions.add(new Question(
-                        rs.getInt("id"), 
-                        courseDao.findOne(rs.getInt("course_id")), 
-                        topicDao.findOne(rs.getInt("topic_id")), rs.getString("text")
-                ));
-            }
-            
-            stmt.close();
-            rs.close();
-            conn.close();
-            
-            return questions;
-        }
-    }*/
 
     @Override
     public List<Question> findAll() throws SQLException {
@@ -77,7 +52,6 @@ public class QuestionDao implements Dao<Question, Integer>{
     public Question saveOrUpdate(Question object) throws SQLException {
         try(Connection conn = database.getConnection()) {
             PreparedStatement stmt = conn.prepareStatement("INSERT INTO Question (topic_id, text) VALUES (?, ?)");
-            //stmt.setInt(1, object.getCourse().getId());
             stmt.setInt(1, object.getTopic().getId());
             stmt.setString(2, object.getText());
             
@@ -86,7 +60,7 @@ public class QuestionDao implements Dao<Question, Integer>{
             
             conn.close();
             
-            return new Question(checkHighestId(), /*object.getCourse(),*/ object.getTopic(), object.getText());
+            return new Question(checkHighestId(), object.getTopic(), object.getText());
         }
     }
 

@@ -54,27 +54,14 @@ public class Main {
             return "/courses/:id";
         });
         
-        /*Spark.post("/courses/:id/questions", (req, res) -> {
-            Question q = questionDao.saveOrUpdate(new Question(
-                    0, 
-                    courseDao.findOne(Integer.parseInt(req.params(":id"))), 
-                    topicDao.findByNameOrCreate(req.queryParams("topic")), 
-                    req.queryParams("text")
-            ));
-            int optionId = 1;
-            String text = req.queryParams("optiontext" + optionId);
-            int rightOption = Integer.parseInt(req.queryParams("optionright"));
-            while(text != null) {
-                boolean isRight;
-                isRight = rightOption == optionId;
-                
-                optionDao.saveOrUpdate(new Option(0, q, text, isRight));
-                
-                optionId++;
-                text = req.queryParams("optiontext" + optionId);
-            }
-            res.redirect("/courses/" + req.params(":id"));
-            return "/courses/:id/questions";
-        });*/
+        Spark.get("/courses/:cid/topics/:tid", (req, res) -> {
+            HashMap map = new HashMap<>();
+            Topic topic = topicDao.findOne(Integer.parseInt(req.params(":tid")));
+            map.put("topic", topic);
+            
+            
+            return new ModelAndView(map, "topic");
+        }, new ThymeleafTemplateEngine());
+        
     }
 }

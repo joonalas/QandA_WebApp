@@ -1,0 +1,90 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    
+    <head>
+        <title th:text="${topic.name}">Title</title>
+        <meta charset="utf-8"/>
+    </head>
+    
+    <body>
+        
+        <h2>
+            <span th:text="${topic.name}">Course Code</span>
+            <br/>
+            <span>Questions:</span>
+        </h2>
+        
+        <ul>
+            <li th:each="question: ${questions}">
+                <span th:text="${question.text}">NULL</span>
+            </li>
+        </ul>
+        
+        <h3>Add Question</h3>
+        <form id="form" method="POST" th:action="@{~/courses/{id}/questions(id=${course.id})}">
+            <span>Topic</span><br/>
+            <input type="text" name="topic"/><br/>
+            <span>Text</span><br/>
+            <textarea name="text" cols="40" rows="5"></textarea><br/>
+            <input id="submit" type="submit" value="Add Question!"/>
+        </form>
+        <button onclick="options.addOption()">Add Option</button>
+        
+        <br/>
+        
+        <script>
+            
+            var options = {
+                amount: 0,
+                addOption: function() {
+                    
+                    if(this.amount < 26) {
+                        this.amount++;
+                        
+                        var sub = document.getElementById("submit");
+                        var subCln = sub.cloneNode(true);
+                        sub.remove();
+                        
+                        var form = document.getElementById("form");
+                    
+                        var br = document.createElement("br");
+                    
+                        var span = document.createElement("span");
+                        span.innerHTML = "Option " 
+                                + String.fromCharCode(("A".charCodeAt(0)+(this.amount-1))) 
+                                + ":";
+                    
+                        var optionText = document.createElement("textarea");
+                        optionText.name = "optiontext" + this.amount;
+                        optionText.cols = 40;
+                        optionText.rows = 3;
+                    
+                        form.appendChild(span);
+                        form.appendChild(br);
+                        br = document.createElement("br");
+                        form.appendChild(optionText);
+                        
+                        span = document.createElement("span");
+                        span.innerHTML = " Is right?:";
+                    
+                        var optionRight = document.createElement("input");
+                        optionRight.type = "radio";
+                        optionRight.name = "optionright";
+                        optionRight.value = this.amount;
+                    
+                        form.appendChild(span);
+                        form.appendChild(optionRight);
+                        form.appendChild(br);
+                        
+                        form.appendChild(subCln);
+                        
+                    }
+                    
+                    
+                }
+            };
+
+        </script>
+        
+    </body>
+</html>
